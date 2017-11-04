@@ -5,6 +5,7 @@ import Link from 'gatsby-link'
 import marked from 'marked'
 import {Box, Thread} from 'react-disqussion'
 import {timestampToSeconds} from '../../utils/time'
+import PodcastPlayer from '../podcast-player/index';
 
 const PLAYBACK_RATES = [
   1.0,
@@ -18,19 +19,21 @@ const PLAYBACK_RATES = [
 class PodcastPage extends Component {
   constructor(props) {
     super(props)
-    this.handleTimeClick = this.handleTimeClick.bind(this)
   }
+
+  currentTime = 0;
+  player = null;
 
   handleTimeClick(e) {
     const {target} = e
+
     if (target.classList.contains('podcast_time')) {
       e.preventDefault()
-      this.audioEl.currentTime = timestampToSeconds(target.innerText)
-    }
-  }
 
-  handleSpeedClick(speed) {
-    this.audioEl.playbackRate = speed;
+      this.player.setState({
+        time: timestampToSeconds(target.innerText)
+      });
+    }
   }
 
   render() {
@@ -54,25 +57,12 @@ class PodcastPage extends Component {
           </date>
         </header>
 
-        <div className={styles.player}>
-          <audio
-            className={styles.player_audio}
-            controls='controls'
-            preload='metadata'
-            src={link}
-            ref={el => (this.audioEl = el)} />
-          <div className={styles.player_controls}>
-            {PLAYBACK_RATES.map(speed => (
-              <button
-                key={speed}
-                className={styles.player_controls_item}
-                onClick={() => this.handleSpeedClick(speed)}>{speed}</button>
-            ))}
-          </div>
-        </div>
+        <PodcastPlayer
+          src={link}
+          ref={el => (this.player = el)} />
 
         <footer
-          onClick={this.handleTimeClick}
+          onClick={e => this.handleTimeClick(e)}
           className={styles.footer}
           dangerouslySetInnerHTML={{__html: marked(notes.notes)}} />
 

@@ -1,0 +1,63 @@
+.player {
+  width: 100%;
+  background: #fafafa;
+}
+
+.player_audio {
+  width: 100%;
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 10px 5px;
+}
+
+.controls_item {
+  color: #555;
+  background: transparent;
+  border: none;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.controls_item:hover {
+  color: #000;
+}
+
+.controls_item + .controls_item {
+  margin-left: 5px;
+}
+
+.timeBar {
+  display: flex;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  background: #777;
+}
+
+.timeBar_progress {
+  position: relative;
+  width: 0;
+  background: #c00;
+}
+
+.timeBar_progress:after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: #c00;
+  transform: translate(50%, -50%) scale(0);
+  transition: transform ease-in-out .3s;
+  border-radius: 50%;
+}
+
+.timeBar:hover .timeBar_progress:after {
+  transform: translate(50%, -50%) scale(1);
+}
